@@ -79,4 +79,33 @@ VALUES
 
 ---------------------------------------------------------
 
-07. Create Table Users
+08. Create Table Users
+
+CREATE TABLE [Users]
+(
+[Id] BIGINT PRIMARY KEY IDENTITY (1,1),
+[Username] VARCHAR (30) UNIQUE NOT NULL,
+[Password] VARCHAR (26) NOT NULL,
+[ProfilePicture] VARBINARY (8000),
+[LastLoginTime] TIME,
+[IsDeleted] BIT
+)
+
+INSERT INTO [Users] ([Username], [Password],[LastLoginTime], [IsDeleted] )
+VALUES
+('Pesho', 'pass1234', '21:21:01', 'false' ),
+('Gosho', 'pass12e2',  '20:21:01', 'true' ),
+('Maria', 'passdasa', '21:03:01', 'true' ),
+('Viki', 'passdwi8',  '12:21:01', 'false' ),
+('Vancho', '2e32daa', '11:21:01', 'true' )
+
+---------------------------------------------------------
+
+09. Change Primary Key
+
+ALTER TABLE [Users]                                - променяме структурата на таблицата
+DROP CONSTRAINT PK__Users__3214EC071BD4AF3B        - изтриваме пъвичния ключ с това име
+
+ALTER TABLE [Users]
+ADD CONSTRAINT PK_Users_Complex
+PRIMARY KEY ([Id], [Username])         -първичния ключ е комбинация от Id и Username

@@ -310,83 +310,133 @@ VALUES
 
 CREATE DATABASE [Hotel]
 
-CREATE TABLE [Employees] (
-[Id] INT IDENTITY PRIMARY KEY,
-[FirstName] VARCHAR (50) NOT NULL,
-[LastName] VARCHAR (50) NOT NULL,
-[Title] VARCHAR (50),
-[Notes] VARCHAR (MAX) 
-);
-
-INSERT INTO [Employees] ([FirstName], [LastName], [Title], [Notes])
-VALUES 
-	('Hristo', 'Sirakov', 'hotel1', NULL),
-	('Ivelina', 'Dimitrova', 'hotel2', NULL),
-	('Dimo', 'Dimitrov', 'hotel3', NULL);
-
-
-CREATE TABLE [Customers] (
-[AccountNumber] INT IDENTITY PRIMARY KEY,
-[FirstName] VARCHAR (50) NOT NULL,
-[LastName] VARCHAR (50) NOT NULL,
-[PhoneNumber] VARCHAR (30) NOT NULL,
-[EmergencyName] VARCHAR (50),
-[EmergencyNumber] VARCHAR (30),
-[Notes] VARCHAR (MAX)
-);
-
-INSERT INTO [Customers] ([FirstName], [LastName], [PhoneNumber], [EmergencyName], [EmergencyNumber], [Notes])
-VALUES 
-('Iva', 'Stoimenova', '0889898989', NULL, NULL, NULL),
-('Natali', 'Petkova', '0888111122', 'Lazarina', NULL, '...'),
-('Niki', 'Todorov', '0883456789', 'Mitko', '0898766654', NULL);
-
-
-CREATE TABLE [RoomStatus] (
-[RoomStatus] VARCHAR(20) PRIMARY KEY,
-[Notes] VARCHAR(MAX)
-);
-
-INSERT INTO [RoomStatus] ([RoomStatus], [Notes])
-VALUES 
-('Free', 'free for rent'),
-('Rented', 'Rented room');
-
-
-CREATE TABLE [RoomTypes] (
-[RoomType] VARCHAR(20) PRIMARY KEY,
-[Notes] VARCHAR (MAX)
-);
-
-INSERT INTO [RoomTypes] ([RoomType], [Notes])
-VALUES 
-('Single room', 'Small single room'),
-('Apartment', 'Big apartment for family'),
-('Double room', 'Double room for more people');
-
-
-CREATE TABLE [BedTypes] (
-[BedType] VARCHAR (20) PRIMARY KEY,
-[Notes] VARCHAR (MAX)
-);
-
-INSERT INTO [BedTypes] ([BedType], [Notes])
-VALUES 
-('Single', 'Small single bed'),
-('Large bed', NULL),
-('Double', 'Double bed');
-
-CREATE TABLE [Rooms] (
-[RoomNumber] INT PRIMARY KEY,
-[RoomType] VARCHAR (20) FOREIGN KEY REFERENCES [RoomTypes]([RoomType]),
-[BedType] VARCHAR (20) FOREIGN KEY REFERENCES [BedTypes]([BedType]),
-[Rate] DECIMAL (5,2),
-[RoomStatus] VARCHAR (20)  FOREIGN KEY REFERENCES [RoomStatus]([RoomStatus]),
-[Notes] VARCHAR(MAX)
+CREATE TABLE Employees(
+	Id INT IDENTITY,
+	FirstName VARCHAR(50) NOT NULL,
+	LastName VARCHAR(50) NOT NULL,
+	Title VARCHAR(4),
+	Notes VARCHAR(MAX)
+	CONSTRAINT PK_EmployeeId PRIMARY KEY (Id)
 )
 
-INSERT INTO [Rooms] ([RoomNumber],[RoomType], [BedType], [Rate], [RoomStatus], [Notes])
-VALUES
-      (21,'Single room', 'Single', 6.8, 'Free', NULL),
-	  (23, 'Apartment', 'Large bed', 10.8, 'Rented', NULL),
-	  (25, 'Single room', 'Double', 10.0, 'Rented', NULL)
+INSERT INTO Employees (FirstName, LastName)
+	VALUES ('Zack','Stevenson'),
+		   ('Marc','Cubert'),
+		   ('Elaine','Jameson')
+
+CREATE TABLE Customers(
+	AccountNumber VARCHAR(100),
+	FirstName VARCHAR(50) NOT NULL,
+	LastName VARCHAR(50) NOT NULL,
+	PhoneNumber VARCHAR(20) NOT NULL,
+	EmergencyName VARCHAR(200),
+	EmergencyNumber VARCHAR(20),
+	Notes VARCHAR(MAX)
+	CONSTRAINT PK_CustomerAccountNumber PRIMARY KEY (AccountNumber)
+)
+
+INSERT INTO Customers (AccountNumber, FirstName, LastName, PhoneNumber)
+	VALUES ('AG024412','Bard','Rubenson','+85224664'),
+		   ('FR021148','Zita','Patries','+53669544123'),
+		   ('BG002114','Elena','Milkova','+35988664911')
+
+CREATE TABLE RoomStatus(
+	[Status] VARCHAR(50),
+	Notes VARCHAR(MAX)
+	CONSTRAINT PK_RoomStatus PRIMARY KEY ([Status])
+)
+
+INSERT INTO RoomStatus ([Status])
+	VALUES ('Free'),
+		   ('Occupied'),
+		   ('Ongoing renovation')
+
+CREATE TABLE RoomTypes(
+	[Type] VARCHAR(50),
+	Notes VARCHAR(MAX)
+	CONSTRAINT PK_RoomType PRIMARY KEY ([Type])
+)
+
+INSERT INTO RoomTypes ([Type])
+	VALUES ('Single'),
+		   ('Family'),
+		   ('Appartament')
+
+CREATE TABLE BedTypes(
+	[Type] VARCHAR(50),
+	Notes VARCHAR(MAX)
+	CONSTRAINT PK_BedType PRIMARY KEY ([Type])
+)
+
+INSERT INTO BedTypes ([Type])
+	VALUES ('Single'),
+		   ('2Persons'),
+		   ('Sofa')
+
+CREATE TABLE Rooms(
+	Number VARCHAR(3),
+	RoomType VARCHAR(50) NOT NULL,
+	BedType VARCHAR(50) NOT NULL,
+	Rate DECIMAL (5,2) NOT NULL,
+	RoomStatus VARCHAR(50) NOT NULL,
+	Notes VARCHAR(MAX)
+	CONSTRAINT PK_RoomNumber PRIMARY KEY (Number),
+	CONSTRAINT FK_RoomType FOREIGN KEY (RoomType)
+		REFERENCES RoomTypes ([Type]),
+	CONSTRAINT FK_BedType FOREIGN KEY (BedType)
+		REFERENCES BedTypes ([Type]),
+	CONSTRAINT FK_RoomStatus FOREIGN KEY (RoomStatus)
+		REFERENCES RoomStatus ([Status])
+)
+
+INSERT INTO Rooms (Number, RoomType, BedType, Rate, RoomStatus)
+	VALUES ('302', 'Single', 'Single', 20.5, 'Occupied'),
+		   ('101', 'Family', '2Persons', 0.0, 'Free'),
+		   ('202', 'Appartament', 'Sofa', 100.5, 'Ongoing renovation')
+
+CREATE TABLE Payments(
+	Id INT IDENTITY,
+	EmployeeId INT NOT NULL,
+	PaymentDate DATETIME,
+	AccountNumber VARCHAR(100),
+	FirstDateOccupied DATETIME NOT NULL,
+	LastDateOccupied DATETIME NOT NULL, 
+	TotalDays INT NOT NULL,
+	AmountCharged DECIMAL (7,2) NOT NULL ,
+	TaxRate DECIMAL (5,2) NOT NULL,
+	TaxAmount DECIMAL (5,2) NOT NULL,
+	PaymentTotal DECIMAL (8,2) NOT NULL,
+	Notes VARCHAR(MAX)
+	CONSTRAINT PK_PaymentId PRIMARY KEY (Id),
+	CONSTRAINT FK_EmployeeId FOREIGN KEY (EmployeeId)
+		REFERENCES Employees (Id)
+)
+
+INSERT INTO Payments (EmployeeId, FirstDateOccupied, LastDateOccupied,
+			TotalDays, AmountCharged, TaxRate, TaxAmount, PaymentTotal)
+	VALUES (1, '2023-12-10', '2023-12-12', 2, 200.6, 2.3, 10, 1500.3),
+		   (2, '2023-12-10', '2023-12-13', 3, 300.6, 2.3, 30, 1600.3),
+		   (3, '2023-12-10', '2023-12-14', 4, 400.6, 2.3, 40, 1700.3)
+
+CREATE TABLE Occupancies(
+	Id INT IDENTITY,
+	EmployeeId INT FOREIGN KEY REFERENCES Employees(Id) NOT NULL,
+	DateOccupied DATETIME NOT NULL,
+	AccountNumber VARCHAR(100) NOT NULL,
+	RoomNumber VARCHAR(3) NOT NULL,
+	RateApplied DECIMAL (5,2) NOT NULL,
+	PhoneCharge VARCHAR(20),
+	Notes VARCHAR(MAX)
+	CONSTRAINT PK_OccupancyId PRIMARY KEY (Id),
+	CONSTRAINT FK_AccountNumber FOREIGN KEY (AccountNumber)
+		REFERENCES Customers (AccountNumber),
+	CONSTRAINT FK_RoomNumber FOREIGN KEY (RoomNumber)
+		REFERENCES Rooms (Number)
+)
+
+INSERT INTO Occupancies (EmployeeId, DateOccupied, AccountNumber, RoomNumber,
+						 RateApplied)
+		VALUES  (1, '2023-12-10', 'AG024412', '202', 20.5),
+				(2, '2023-12-10', 'FR021148', '101', 30.5),
+				(3, '2023-12-10', 'BG002114', '302', 0.05)
+

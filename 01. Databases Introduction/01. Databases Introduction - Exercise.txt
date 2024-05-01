@@ -303,3 +303,90 @@ VALUES
 	(1,3,2, NULL, 266487, 267100, 267100-266487, '06/15/2021', '06/19/2021', 4, 1.47, 9.00, 1, NULL),
 	(2,2, 3, 18.40, 26800, 27200, 27200-26800, '06/15/2021', '06/17/2021', 3, 2.11, 9.00, 1, NULL),
 	(3,1,1, 45, 4400, 5640, 5640-4400, '06/15/2021', '06/20/2021', 5, 4.1, 9.00, 1, NULL)
+
+---------------------------------------------------------
+
+15. Hotel Database
+
+CREATE DATABASE [Hotel]
+
+CREATE TABLE [Employees] (
+[Id] INT IDENTITY PRIMARY KEY,
+[FirstName] VARCHAR (50) NOT NULL,
+[LastName] VARCHAR (50) NOT NULL,
+[Title] VARCHAR (50),
+[Notes] VARCHAR (MAX) 
+);
+
+INSERT INTO [Employees] ([FirstName], [LastName], [Title], [Notes])
+VALUES 
+	('Hristo', 'Sirakov', 'hotel1', NULL),
+	('Ivelina', 'Dimitrova', 'hotel2', NULL),
+	('Dimo', 'Dimitrov', 'hotel3', NULL);
+
+
+CREATE TABLE [Customers] (
+[AccountNumber] INT IDENTITY PRIMARY KEY,
+[FirstName] VARCHAR (50) NOT NULL,
+[LastName] VARCHAR (50) NOT NULL,
+[PhoneNumber] VARCHAR (30) NOT NULL,
+[EmergencyName] VARCHAR (50),
+[EmergencyNumber] VARCHAR (30),
+[Notes] VARCHAR (MAX)
+);
+
+INSERT INTO [Customers] ([FirstName], [LastName], [PhoneNumber], [EmergencyName], [EmergencyNumber], [Notes])
+VALUES 
+('Iva', 'Stoimenova', '0889898989', NULL, NULL, NULL),
+('Natali', 'Petkova', '0888111122', 'Lazarina', NULL, '...'),
+('Niki', 'Todorov', '0883456789', 'Mitko', '0898766654', NULL);
+
+
+CREATE TABLE [RoomStatus] (
+[RoomStatus] VARCHAR(20) PRIMARY KEY,
+[Notes] VARCHAR(MAX)
+);
+
+INSERT INTO [RoomStatus] ([RoomStatus], [Notes])
+VALUES 
+('Free', 'free for rent'),
+('Rented', 'Rented room');
+
+
+CREATE TABLE [RoomTypes] (
+[RoomType] VARCHAR(20) PRIMARY KEY,
+[Notes] VARCHAR (MAX)
+);
+
+INSERT INTO [RoomTypes] ([RoomType], [Notes])
+VALUES 
+('Single room', 'Small single room'),
+('Apartment', 'Big apartment for family'),
+('Double room', 'Double room for more people');
+
+
+CREATE TABLE [BedTypes] (
+[BedType] VARCHAR (20) PRIMARY KEY,
+[Notes] VARCHAR (MAX)
+);
+
+INSERT INTO [BedTypes] ([BedType], [Notes])
+VALUES 
+('Single', 'Small single bed'),
+('Large bed', NULL),
+('Double', 'Double bed');
+
+CREATE TABLE [Rooms] (
+[RoomNumber] INT PRIMARY KEY,
+[RoomType] VARCHAR (20) FOREIGN KEY REFERENCES [RoomTypes]([RoomType]),
+[BedType] VARCHAR (20) FOREIGN KEY REFERENCES [BedTypes]([BedType]),
+[Rate] DECIMAL (5,2),
+[RoomStatus] VARCHAR (20)  FOREIGN KEY REFERENCES [RoomStatus]([RoomStatus]),
+[Notes] VARCHAR(MAX)
+)
+
+INSERT INTO [Rooms] ([RoomNumber],[RoomType], [BedType], [Rate], [RoomStatus], [Notes])
+VALUES
+      (21,'Single room', 'Single', 6.8, 'Free', NULL),
+	  (23, 'Apartment', 'Large bed', 10.8, 'Rented', NULL),
+	  (25, 'Single room', 'Double', 10.0, 'Rented', NULL)

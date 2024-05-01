@@ -109,3 +109,104 @@ DROP CONSTRAINT PK__Users__3214EC071BD4AF3B        - изтриваме пъви
 ALTER TABLE [Users]
 ADD CONSTRAINT PK_Users_Complex
 PRIMARY KEY ([Id], [Username])         -първичния ключ е комбинация от Id и Username
+
+---------------------------------------------------------
+
+10. Add Check Constraint
+
+ALTER TABLE [Users]
+ADD CONSTRAINT Check_Password_Length CHECK (DATALENGTH([Password]) >= 5);
+
+---------------------------------------------------------
+
+11. Set Default Value of a Field
+
+ALTER TABLE [Users]
+ADD CONSTRAINT Default_Current_Time DEFAULT GETDATE() FOR [LastLoginTime] 
+
+---------------------------------------------------------
+
+12. Set Unique Field
+
+ALTER TABLE [Users]
+DROP CONSTRAINT PK_Users_Complex
+ALTER TABLE [Users]
+ADD CONSTRAINT Pk_Id PRIMARY KEY ([Id])
+ALTER TABLE [Users]
+ADD CONSTRAINT Check_Username_Length CHECK (DATALENGTH(Username) >= 3)
+
+---------------------------------------------------------
+
+13. Movies Database
+
+CREATE DATABASE [Movies]
+
+CREATE TABLE [Directors] (
+[Id] INT PRIMARY KEY IDENTITY NOT NULL,
+[DirectorName] VARCHAR (255),
+[Notes] VARCHAR (MAX)
+);
+
+INSERT INTO [Directors] ([DirectorName], [Notes])
+VALUES
+		('Guy Richie', 'Makes good movies'),
+		('Woodie Alan', 'Makes bad movies'),
+		('Pesho', NULL),
+		('Gosho', NULL),
+		('Ivana', 'Makes good movies')
+
+
+CREATE TABLE [Genres] (
+[Id] INT PRIMARY KEY IDENTITY NOT NULL,
+[GenreName] VARCHAR (255),
+[Notes] VARCHAR (MAX)
+);
+
+INSERT INTO [Genres] ([GenreName], [Notes])
+VALUES
+		('romantic', 'Loves'),
+		('drama', 'bad movie'),
+		('horror', 'really scarry'),
+		('comedy', 'funny'),
+		('criminal', 'interesting')
+
+CREATE TABLE [Categories] (
+[Id] INT PRIMARY KEY IDENTITY NOT NULL,
+[CategoryName] VARCHAR (255),
+[Notes] VARCHAR (MAX)
+);
+
+INSERT INTO [Categories] ([CategoryName], [Notes])
+VALUES
+		('Category 1', '1'),
+		('Category 2', '2'),
+		('Category 3', NULL),
+		('Category 4', NULL),
+		('Category 5', '5')
+
+
+CREATE TABLE [Movies] (
+[Id] INT IDENTITY NOT NULL,
+[Title] VARCHAR (50),
+[DirectorId] INT FOREIGN KEY REFERENCES [Directors]([Id]),
+[CopyrightYear] SMALLINT,
+[Length] FLOAT,
+[GenreId] INT FOREIGN KEY REFERENCES [Genres]([Id]),
+[CategoryId] INT FOREIGN KEY REFERENCES Categories([Id]),
+[Rating] DECIMAL (3,1),
+[Notes] VARCHAR (MAX)
+);
+
+INSERT INTO [Movies] ([Title], [DirectorId], [CopyrightYear], [Length], [GenreId], [CategoryId], [Rating], [Notes])
+VALUES
+		('Die hard', 2, NULL, 1.87, 1, 1, 5.4, '....'),
+		('Rocky 2', 1, 1987, 1.6, 3, 3, 5.3, 'asakljk'),
+		('Han Asparuh', 4, 1983, 2.67, 2, 2, 5.2, NULL),
+		('Toplo', 3, 1976, 1.56, 5, 4, 5.5, 'ddde'),
+		('Nai-dobriqt', 5, 1971, 1.47, 4, 5, 5, '...e.e.')
+
+SELECT * FROM [Movies]
+
+---------------------------------------------------------
+
+14. Car Rental Database

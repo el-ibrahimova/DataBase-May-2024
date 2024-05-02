@@ -505,4 +505,13 @@ SELECT * FROM Departments;
 SELECT * FROM Employees;
 ---------------------------------------------------------
 
-19. Basic Select All Files
+20. Basic Select All Files and Order Them
+
+SELECT * FROM Towns 
+	ORDER BY [Name]
+
+SELECT * FROM Departments
+	ORDER BY [Name]
+
+SELECT * FROM Employees
+	ORDER BY Salary DESC

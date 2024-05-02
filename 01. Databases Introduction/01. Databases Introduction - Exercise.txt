@@ -535,3 +535,16 @@ UPDATE Employees
 SET Salary = Salary * 1.10
 
 SELECT Salary FROM Employees
+---------------------------------------------------------
+
+23. Decrease Tax Rate
+
+UPDATE Payments
+SET TaxRate = TaxRate*0.97;
+
+SELECT TaxRate From Payments;
+---------------------------------------------------------
+
+23. Delete All Records
+
+TRUNCATE TABLE [Occupancies]

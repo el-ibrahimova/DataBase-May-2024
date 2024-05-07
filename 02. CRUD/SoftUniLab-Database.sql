@@ -70,5 +70,5 @@ JOIN Addresses AS a ON e.AddressID = a.AddressID
 JOIN Towns AS t ON a.TownID = t.TownID
 WHERE d.[Name] = 'Engineering';
 
-
-SELECT * FROM v_EngineeringEmployeesBySalary;
+SELECT * FROM v_EngineeringEmployeesBySalary
+ORDER BY [Заплата];

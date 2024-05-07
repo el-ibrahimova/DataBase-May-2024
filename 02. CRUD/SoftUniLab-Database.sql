@@ -72,3 +72,6 @@ WHERE d.[Name] = 'Engineering';
 
 SELECT * FROM v_EngineeringEmployeesBySalary
 ORDER BY [Заплата];
+
+--изтриваме View-то
+DROP VIEW v_EngineeringEmployeesBySalary;

@@ -13,9 +13,17 @@ SELECT
 	FirstName, 
 	LastName, 
 	Salary 
-FROM Employees
+FROM Employees;
 
 -- 05. Find Full Name of Each Employee
 SELECT 
-	FirstName + ' '+ LastName 
-FROM Employees
+	FirstName,
+	MiddleName,
+	LastName 
+FROM Employees;
+
+-- 06. Find Email Address of Each Employee
+SELECT CONCAT(FirstName, '.', LastName, '@', 'softuni.bg')
+FROM Employees;
+
+--07. Find All Different Employees' Salaries

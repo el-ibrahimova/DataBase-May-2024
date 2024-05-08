@@ -24,6 +24,11 @@ FROM Employees;
 
 -- 06. Find Email Address of Each Employee
 SELECT CONCAT(FirstName, '.', LastName, '@', 'softuni.bg')
+AS [Full Email Address]
 FROM Employees;
 
 --07. Find All Different Employees' Salaries
+		--DISTINCT - връща само уникални стойности
+SELECT DISTINCT Salary
+FROM Employees
+

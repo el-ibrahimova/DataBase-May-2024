@@ -99,3 +99,21 @@ ORDER BY Salary DESC,
 		 -- със запетайка изреждаме кои колони да се сортират и по какъв начин
 
 -- 16. Create View Employees with Salaries
+CREATE VIEW V_EmployeesSalaries
+AS 
+(
+ SELECT FirstName, LastName, Salary
+ FROM Employees
+);
+
+--17. Create View Employees with Job Titles
+CREATE VIEW V_EmployeeNameJobTitle
+	AS 
+		(
+		SELECT CONCAT (FirstName,' ', MiddleName, ' ', LastName)
+		AS [Full Name]
+		,[JobTitle]
+		FROM Employees
+		)
+
+--18. Distinct Job Titles

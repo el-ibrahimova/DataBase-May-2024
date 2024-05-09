@@ -74,4 +74,18 @@ FROM Employees
 WHERE Salary > 50000
 ORDER BY Salary DESC;
 
---13. Find 5 Best Paid Employees.
+--13. Find 5 Best Paid Employees
+SELECT TOP (5)
+	FirstName
+	,LastName
+FROM Employees
+ORDER BY Salary DESC;
+
+-- 14. Find All Employees Except Marketing
+SELECT 
+	FirstName
+	,LastName
+FROM Employees
+WHERE DepartmentID <> 4;
+
+--15. Sort Employees Table

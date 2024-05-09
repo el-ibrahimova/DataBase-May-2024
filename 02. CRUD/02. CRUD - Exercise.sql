@@ -89,3 +89,11 @@ FROM Employees
 WHERE DepartmentID <> 4;
 
 --15. Sort Employees Table
+   SELECT 
+      * 
+   FROM  Employees
+ORDER BY Salary DESC,
+		 FirstName,
+	  	 LastNAme DESC,
+		 MiddleName;
+

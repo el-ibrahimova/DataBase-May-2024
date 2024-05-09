@@ -107,6 +107,13 @@ WHERE DepartmentID <> 4;
 -----------------------------------------------------------------------
 
 15. Sort Employees Table
+   SELECT 
+      * 
+   FROM  Employees
+ORDER BY Salary DESC,
+		 FirstName,
+	  	 LastNAme DESC,
+		 MiddleName;
 
 16. Create View Employees with Salaries
 

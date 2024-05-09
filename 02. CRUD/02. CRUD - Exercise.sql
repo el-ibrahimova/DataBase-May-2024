@@ -44,3 +44,34 @@ FROM Employees
 WHERE JobTitle = 'Sales Representative';
 
 --09. Find Names of All Employees by Salary in Range
+SELECT
+	FirstName,
+	LastName, 
+	JobTitle
+FROM Employees
+WHERE Salary BETWEEN 20000 AND 30000;
+
+--10. Find Names of All Employees
+SELECT CONCAT(FirstName, ' ', MiddleName, ' ', LastName)
+-- SELECT_WS(' ', FirstName, MiddleName, LastName) - може и по този начин Select_WithSeparator, като първо казваме с какво ще разделяме, после пишем колоните
+AS [Full Name]
+FROM Employees
+WHERE Salary IN (25000, 14000, 12500, 23600);  -- стойността на заплатата е една от тези в скобите
+
+-- 11. Find All Employees Without a Manager
+SELECT 
+FirstName
+,LastName
+FROM Employees
+WHERE ManagerID IS NULL -- сравнението се извършва с IS и IS NOT
+
+--12. Find All Employees with a Salary More Than 50000
+SELECT 
+	FirstName
+	,LastName
+	,Salary
+FROM Employees
+WHERE Salary > 50000
+ORDER BY Salary DESC;
+
+--13. Find 5 Best Paid Employees.

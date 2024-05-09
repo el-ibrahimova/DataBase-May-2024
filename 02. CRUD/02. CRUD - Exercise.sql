@@ -96,4 +96,6 @@ ORDER BY Salary DESC,
 		 FirstName,
 	  	 LastNAme DESC,
 		 MiddleName;
+		 -- със запетайка изреждаме кои колони да се сортират и по какъв начин
 
+-- 16. Create View Employees with Salaries

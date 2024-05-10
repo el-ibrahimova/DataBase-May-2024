@@ -183,3 +183,29 @@ GO
 ORDER BY PeakName
 
 -- 23. Biggest Countries by Population
+SELECT ContinentCode
+  FROM Countries
+-- първо проверяваме на кой код отговаря Европа
+
+  SELECT 
+     TOP (30) CountryName, [Population]
+    FROM Countries
+   WHERE ContinentCode = 'EU'
+ORDER BY [Population] DESC,
+         CountryName;
+
+-- 24. *Countries and Currency (Euro / Not Euro)
+-- CASE WHEN -> If CurrencyCode = 'EUR' then display 'Euro'
+--				else display 'Not Euro'
+
+  SELECT CountryName,
+	     CountryCode,
+	     CurrencyCode,
+    CASE CurrencyCode
+    WHEN 'EUR' THEN 'Euro'
+    ELSE 'Not Euro'
+     END
+      AS Currency
+    FROM Countries
+ORDER BY CountryName;
+ 

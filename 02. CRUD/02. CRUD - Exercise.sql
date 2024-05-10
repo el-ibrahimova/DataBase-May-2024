@@ -200,12 +200,18 @@ ORDER BY [Population] DESC,
 
   SELECT CountryName,
 	     CountryCode,
-	     CurrencyCode,
-    CASE CurrencyCode
-    WHEN 'EUR' THEN 'Euro'
-    ELSE 'Not Euro'
-     END
+	     CASE CurrencyCode
+         WHEN 'EUR' THEN 'Euro'
+         ELSE 'Not Euro'
+         END
       AS Currency
     FROM Countries
 ORDER BY CountryName;
+
+--25. All Diablo Characters
+USE Diablo
+GO
  
+   SELECT [Name]
+     FROM Characters
+ ORDER BY [Name];

@@ -169,7 +169,44 @@ ORDER BY StartDate,
 
 20. Last 7 Hired Employees
 
+  SELECT
+    TOP (7) FirstName,
+        LastName,
+        HireDate
+   FROM Employees
+ORDER BY HireDate DESC;
+----------------------------------------------------------------
+
 21. Increase Salaries
+
+SELECT *
+FROM Employees;
+
+SELECT DepartmentID
+  FROM Departments
+ WHERE [Name] IN ('Engineering', 'Tool Design', 'Marketing', 'Information Services');
+     -- с тази заявка намираме на кои ID-та са тези професии - 1, 2, 4, 11
+
+	 -- горните са помощни заявки
+	 -- в Judge качваме само долните 2
+
+UPDATE Employees
+   SET Salary += 0.12 * Salary
+ WHERE DepartmentID IN (1,2,4,11);
+
+SELECT Salary 
+  FROM Employees;
+
+  -- Advanced solution (subqueries)
+  UPDATE Employees
+     SET Salary += 0.12 * Salary
+   WHERE DepartmentID IN ( 
+			    SELECT DepartmentID
+			      FROM Departments
+			     WHERE [Name] IN ('Engineering', 'Tool Design', 'Marketing', 'Information Services'
+			   )
+
+------------------------------------------------------------------
 
 22. All Mountain Peaks
 

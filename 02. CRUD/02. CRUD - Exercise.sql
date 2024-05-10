@@ -115,5 +115,17 @@ CREATE VIEW V_EmployeeNameJobTitle
 		,[JobTitle]
 		FROM Employees
 		)
+		
+
+--17. Create View Employees with Job Titles - without CONCAT
+CREATE VIEW V_EmployeeNameJobTitle
+	AS 
+		(
+		SELECT FirstName +' '+ ISNULL( MiddleName, ' ') + ' '+ LastName)
+		AS [Full Name]
+		,[JobTitle]
+		FROM Employees
+		)
+		--  в този случай ако MiddleName не е NULL, то взимаме неговата стойност, ako e NULL заместваме с ' '
 
 --18. Distinct Job Titles

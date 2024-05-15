@@ -1,3 +1,8 @@
+--01. One-to-One Relationship
+
+--02. One-to-Many Relationship 
+
+--03. Many-to-Many Relationship
 
 -- 09. Peaks in Rila 
 SELECT m.MountainRange, p.PeakName, p.Elevation

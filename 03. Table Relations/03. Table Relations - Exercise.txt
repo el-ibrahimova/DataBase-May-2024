@@ -128,7 +128,50 @@ INSERT INTO Teachers ([Name], ManagerID)
 ----------------------------------------------------------------------------------------------------------
 
 --05. Online Store Database
+CREATE DATABASE OnlineStore
+GO
 
+USE OnlineStore
+
+CREATE TABLE Cities
+(
+CityID INT PRIMARY KEY IDENTITY,
+[Name] NVARCHAR (50) NOT NULL
+)
+
+CREATE TABLE ItemTypes
+(
+ItemTypeID INT PRIMARY KEY IDENTITY,
+[Name] NVARCHAR (50) NOT NULL
+)
+
+CREATE TABLE Customers
+(
+CustomerID INT PRIMARY KEY IDENTITY,
+[Name] NVARCHAR (50) NOT NULL,
+Birthday DATETIME2 NOT NULL,
+CityID INT NOT NULL FOREIGN KEY REFERENCES Cities(CityID)
+)
+
+CREATE TABLE Items
+(
+ItemID INT PRIMARY KEY IDENTITY,
+[Name] NVARCHAR (50) NOT NULL,
+ItemTypeID INT NOT NULL FOREIGN KEY REFERENCES ItemTypes(ItemTypeID)
+)
+
+CREATE TABLE Orders
+(
+OrderID INT PRIMARY KEY IDENTITY,
+CustomerID INT NOT NULL FOREIGN KEY REFERENCES Customers(CustomerID)
+)
+
+CREATE TABLE OrderItems
+(
+OrderID INT FOREIGN KEY REFERENCES Orders(OrderID),
+ItemID INT FOREIGN KEY REFERENCES Items(ItemID),
+PRIMARY KEY (OrderID, ItemID)
+)
 
 -----------------------------------------------------------------------------------------------------------
 --06. University Database
@@ -173,15 +216,9 @@ CREATE TABLE Payments
 )
 -----------------------------------------------------------------------------------------------------------
 
---07. SoftUni Design
-
---08. Geography Design 
-
-----------------------------------------------------------------------------------------------------------
-
 -- 09. Peaks in Rila 
 SELECT m.MountainRange, p.PeakName, p.Elevation
-FROM Mountains AS m
+  FROM Mountains AS m
 JOIN Peaks AS p ON p.MountainId = m.Id
 WHERE m.MountainRange = 'Rila'
 ORDER BY p.Elevation DESC;

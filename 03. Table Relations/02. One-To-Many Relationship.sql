@@ -1,3 +1,4 @@
+-- 02. One-To-Many Relationship
 CREATE TABLE Manufacturers
 (
 	ManufacturerID INT PRIMARY KEY IDENTITY, 

@@ -44,3 +44,27 @@ WHERE DepartmentID IN (3,10) AND YEAR (HireDate) BETWEEN 1995 AND 2005;
 ----------------------------------------------------------------------------------------------
 
 04. Find All Employees Except Engineers
+
+-- method 1
+SELECT 
+	 FirstName,  
+	 LastName
+FROM Employees
+WHERE CHARINDEX ('engineer', JobTitle) =0;
+
+--method 2
+SELECT 
+	 FirstName,  
+	 LastName
+FROM Employees
+WHERE JobTitle NOT LIKE  '%engineer%';
+
+-------------------------------------------------------------------------------------------------
+
+05. Find Towns with Name Length
+
+   SELECT [Name]
+     FROM Towns
+    WHERE LEN(Name) IN (5,6)
+ ORDER BY [Name]
+

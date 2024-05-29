@@ -271,6 +271,12 @@ ORDER BY c.CountryName
 
 16. Countries Without Any Mountains
 
+    SELECT 
+	  COUNT(c.CountryCode) AS [Count]
+     FROM Countries AS c
+LEFT JOIN MountainsCountries AS mc ON c.CountryCode = mc.CountryCode
+    WHERE MountainId IS NULL
+
 
 
 

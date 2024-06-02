@@ -1,0 +1,17 @@
+01. Records'Count
+
+USE Gringotts
+GO
+
+SELECT COUNT (*) 
+  FROM WizzardDeposits
+----------------------------------------------------------------------------------------------
+
+02. Longest Magic Wand
+
+SELECT MAX(MagicWandSize)
+FROM WizzardDeposits
+
+---------------------------------------------------------------------------------------------
+
+03. Longest Magic Wand Per Deposit Groups

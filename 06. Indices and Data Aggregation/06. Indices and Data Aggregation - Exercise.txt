@@ -134,7 +134,175 @@ ORDER BY DepositGroup DESC,
 ------------------------------------------------------------------------------------------------
 
 12. Rich Wizard, Poor Wizard
-						
+
+-- method 1 => with INNER JOIN
+  -- втория магьосник от първата таблица става първи във втората таблица
+
+SELECT *
+FROM WizzardDeposits AS wd1
+JOIN WizzardDeposits AS wd2 
+  ON wd2.Id+1 = wd1.Id 
+
+
+  -- method 2 => with windows function LEAD
+  -- LEAD() -> return the value of a column from the next row ordered by criteria
+ 
+ SELECT 
+	SUM ([Difference]) AS SumDifference
+   FROM
+	      (
+		   SELECT 
+			FirstName AS [Host Wizard],
+			DepositAmount AS [Host Wizard Deposit],
+			LEAD (FirstName) OVER (ORDER BY (Id)) AS [Guest Wizard],
+			LEAD (DepositAmount) OVER (ORDER BY (Id)) AS [Guest Wizard Deposit],
+			DepositAmount - LEAD (DepositAmount) OVER (ORDER BY (Id)) AS [Difference]
+		   FROM WizzardDeposits
+	       )
+	AS DifferenceSubquery
+----------------------------------------------------------------------------------------------
+
+13. Departments Total Salaries
+
+USE SoftUniLab
+GO
+
+  SELECT 
+	 DepartmentID,
+	 SUM (Salary) AS TotalSalary
+    FROM Employees
+GROUP BY DepartmentID
+------------------------------------------------------------------------------------------------
+
+14. Employees Minimum Salaries
+
+  SELECT
+	 DepartmentID, 
+	 MIN(Salary) AS MinimumSalary
+    FROM Employees
+   WHERE DepartmentID IN (2,5,7) AND HireDate >'01/01/2000'
+GROUP BY DepartmentID
+-------------------------------------------------------------------------------------------------
+
+15. Employees Average Salaries
+
+ SELECT *
+   INTO EmployeesWithSalaryOver30000 -- създаваме нова таблица
+   FROM Employees
+  WHERE Salary > 30000
+
+  DELETE 
+    FROM EmployeesWithSalaryOver30000 
+   WHERE ManagerId = 42;
+
+   UPDATE EmployeesWithSalaryOver30000
+      SET Salary +=5000
+    WHERE DepartmentID =1
+
+   SELECT 
+	  DepartmentID,
+	  AVG (Salary) AS AverageSalary
+     FROM EmployeesWithSalaryOver30000
+ GROUP BY DepartmentID
+
+
+-- АКО ТРЯБВА ДА ИЗТРИЕМ ДАННИ В РЕАЛЕН ПРОЕКТ, ПО ДОБРЕ БИ БИЛО ДА НАПРАВИМ КОЛОНА, В КОЯТО ДА ЗАПИСВАМЕ С 0 ИЛИ 1 ДАЛИ ЗАПИСА Е ЛОГИЧЕСКИ ИЗТРИТ ИЛИ НЕ. НЕ Е ДОБРЕ ФИЗИЧЕСКИ ДА СЕ ИЗТРИВАТ НИКАКВИ ДАННИ.
+-- МОЖЕМ ДА НАПРАВИМ ТОВА ПО СЛЕДНИЯ НАЧИН
+
+-- Instead of delete in real world
+ALTER TABLE EmployeesWithSalaryOver30000
+        ADD IsDeleted BIT DEFAULT (0) NOT NULL
+
+-- Select all non-deleted employees
+SELECT *
+  FROM EmployeesWithSalaryOver30000
+ WHERE IsDeleted =0
+
+-- Delete all with ManagerID =3
+UPDATE EmployeesWithSalaryOver30000
+   SET IsDeleted =1
+ WHERE ManagerID =3
+
+-------------------------------------------------------------------------------------------------
+16. Employees Maximum Salary
+
+  SELECT
+	 DepartmentID, 
+	 MAX(Salary) AS MaxSalary
+    FROM Employees
+   GROUP BY DepartmentID
+  HAVING MAX(Salary) NOT BETWEEN 30000 AND 70000
+-------------------------------------------------------------------------------------------------
+
+17. Employees Count Salaries
+
+  SELECT 
+	 COUNT(Salary) AS [Count]  
+    FROM Employees
+   WHERE ManagerId IS NULL
+--------------------------------------------------------------------------------------------------
+
+18. 3rd Highest Salary
+
+  SELECT 
+DISTINCT DepartmentID,  -- използваме DISTINCT, за да изберем само уникални стойности (за да няма повтаряне на данни) 
+	 Salary AS ThirdHighestSalary
+    FROM 
+	     (
+		SELECT 
+		       DepartmentID,
+		       Salary,
+		       DENSE_RANK() OVER(PARTITION BY DepartmentID ORDER BY Salary DESC) 
+		    AS SalaryRank
+		  FROM Employees
+	     )
+      AS SalaryRankingSubquery
+   WHERE SalaryRank =3
+-----------------------------------------------------------------------------------------------
+
+19. Salary Challenge
+
+	-- method 1
+	SELECT TOP 10
+	       e.FirstName,
+	       e.LastName,
+		   e.DepartmentID		  
+	  FROM Employees
+	    AS e
+	 WHERE e.Salary >
+			(	
+			  SELECT 
+				 AVG(Salary) AS AverageSalary
+			    FROM Employees
+	    		      AS eSub
+			   WHERE eSub.DepartmentID = e.DepartmentID
+			GROUP BY DepartmentID
+			)
+       ORDER BY e.DepartmentID
+
+
+   -- method 2
+
+   WITH a AS 
+   (
+     SELECT 
+  	    DepartmentID,
+	    AVG(Salary) AS AverageSalaryPerDepartment
+       FROM Employees
+   GROUP BY DepartmentID
+    )
+   
+     SELECT TOP 10
+            b.FirstName,
+	    b.LastName,
+	    b.DepartmentID
+       FROM Employees AS b
+       JOIN a ON a.DepartmentID = b.DepartmentID
+      WHERE b.Salary > a.AverageSalaryPerDepartment
+   ORDER BY a.DepartmentID
+				
+
+
 
 
 
